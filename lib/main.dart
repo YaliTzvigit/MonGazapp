@@ -160,7 +160,9 @@ class _MonGazPageState extends State<MonGazPage> with SingleTickerProviderStateM
         title: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text('225 0788729838', style: TextStyle(fontWeight: FontWeight.bold)),
+            const Text('225 0788729838', style: TextStyle(fontWeight: FontWeight.bold), 
+            ),
+            
             const Text('Mon Gaz 🔥', style: TextStyle(fontWeight: FontWeight.bold)),
             IconButton(
               icon: const Icon(Icons.menu),
