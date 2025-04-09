@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'pages/HomePage.dart'; // Importe HomePage
-import 'pages/Mongazpage.dart'; // Importe AboutPage
-import 'pages/auth.dart'; // Importe AboutPage
-import 'pages/history.dart'; // Importe AboutPage
-import 'pages/settings.dart'; // Importe AboutPage
-import 'pages/HelpPage.dart'; // Importe AboutPage
-import 'pages/ClientSpace.dart'; // Importe AboutPage
+import 'pages/HomePage.dart'; 
+import 'pages/Mongazpage.dart';
+import 'pages/auth.dart'; 
+import 'pages/history.dart'; 
+import 'pages/settings.dart'; 
+import 'pages/HelpPage.dart'; 
+import 'pages/ClientSpace.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -17,20 +17,20 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home', // Route initiale (HomePage)
+      initialRoute: '/mongaz', 
       routes: {
-        '/home': (context) => const HomePage(),
-        '/mongaz': (context) => const MongazPage(),
-        '/auth': (context) => const AuthPage(),
+        /* '/home': (context) => const HomePage(), */
+        '/mongaz': (context) =>  MongazPage(),
+       /* '/auth': (context) => const AuthPage(),
         '/history': (context) => HistoriquePage(),
         '/settings': (context) => const SettingsPage(),
         '/help': (context) => const HelpPage(),
-        '/clientspace' : (context) => const EspaceClientPage(),
+        '/clientspace' : (context) => const EspaceClientPage(), */
       },
       theme: ThemeData(
         primarySwatch: Colors.blue,
         fontFamily:
-            'Nunito', 
+            'Inter', 
       ),
     );
   }

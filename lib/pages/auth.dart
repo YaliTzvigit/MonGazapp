@@ -18,7 +18,7 @@ class _AuthPageState extends State<AuthPage> {
   void navigateToMonGazPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MongazPage()),
+      MaterialPageRoute(builder: (context) =>  MongazPage()),
     );
   }
 
