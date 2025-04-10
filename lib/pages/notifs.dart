@@ -1,11 +1,10 @@
-
-
-
-// Gestion des notifs  
+// Gestion des notifs
 
 import 'package:flutter/material.dart';
 
 class notifPage extends StatefulWidget {
+  const notifPage({super.key});
+
   @override
   _notifPageState createState() => _notifPageState();
 }
@@ -18,7 +17,10 @@ class _notifPageState extends State<notifPage> {
       _isNotificationEnabled = value;
     });
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(_isNotificationEnabled ? 'Notifications activées' : 'Notifications désactivées')),
+      SnackBar(
+          content: Text(_isNotificationEnabled
+              ? 'Notifications activées'
+              : 'Notifications désactivées')),
     );
   }
 
@@ -62,7 +64,8 @@ class _notifPageState extends State<notifPage> {
                 ),
                 padding: EdgeInsets.symmetric(vertical: 15, horizontal: 40),
               ),
-              child: Text("Sauvegarder les paramètres", style: TextStyle(fontSize: 16)),
+              child: Text("Sauvegarder les paramètres",
+                  style: TextStyle(fontSize: 16)),
             ),
           ],
         ),

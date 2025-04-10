@@ -1,12 +1,12 @@
+// Error page pour afficher les erreurs
 
-
-// Error page pour afficher les erreurs 
-
-// code ca 
+// code ca
 
 import 'package:flutter/material.dart';
 
 class ErrorPage extends StatelessWidget {
+  const ErrorPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,7 +42,7 @@ class ErrorPage extends StatelessWidget {
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                Navigator.pop(context);  // Retour à la page précédente
+                Navigator.pop(context); // Retour à la page précédente
               },
               child: Text("Retour"),
             ),

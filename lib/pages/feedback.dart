@@ -1,9 +1,9 @@
-
-
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class FeedbackPage extends StatefulWidget {
+  const FeedbackPage({super.key});
+
   @override
   _FeedbackPageState createState() => _FeedbackPageState();
 }

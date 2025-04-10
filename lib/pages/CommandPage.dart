@@ -1,11 +1,12 @@
-
-// Pour commander ta bouteille 
+// Pour commander ta bouteille
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:geolocator/geolocator.dart';
 
 class CommandePage extends StatefulWidget {
+  const CommandePage({super.key});
+
   @override
   _CommandePageState createState() => _CommandePageState();
 }
@@ -25,7 +26,8 @@ class _CommandePageState extends State<CommandePage> {
   Future<void> _determinePosition() async {
     LocationPermission permission = await Geolocator.requestPermission();
 
-    if (permission == LocationPermission.deniedForever || permission == LocationPermission.denied) {
+    if (permission == LocationPermission.deniedForever ||
+        permission == LocationPermission.denied) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Permission de localisation refusée.")),
       );
@@ -55,12 +57,14 @@ class _CommandePageState extends State<CommandePage> {
     _markers.addAll([
       Marker(
         markerId: MarkerId("gaz1"),
-        position: LatLng(_currentPosition!.latitude + 0.005, _currentPosition!.longitude + 0.002),
+        position: LatLng(_currentPosition!.latitude + 0.005,
+            _currentPosition!.longitude + 0.002),
         infoWindow: InfoWindow(title: "Point Gaz - Yopougon"),
       ),
       Marker(
         markerId: MarkerId("gaz2"),
-        position: LatLng(_currentPosition!.latitude - 0.004, _currentPosition!.longitude - 0.003),
+        position: LatLng(_currentPosition!.latitude - 0.004,
+            _currentPosition!.longitude - 0.003),
         infoWindow: InfoWindow(title: "Point Gaz - Cocody"),
       ),
     ]);

@@ -1,9 +1,10 @@
-
-// Reinitialiser son mot de passe 
+// Reinitialiser son mot de passe
 
 import 'package:flutter/material.dart';
 
 class ResetPasswordPage extends StatefulWidget {
+  const ResetPasswordPage({super.key});
+
   @override
   _ResetPasswordPageState createState() => _ResetPasswordPageState();
 }
@@ -56,7 +57,8 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                   if (value == null || value.isEmpty) {
                     return 'Veuillez entrer votre email';
                   }
-                  if (!RegExp(r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+").hasMatch(value)) {
+                  if (!RegExp(r"^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+                      .hasMatch(value)) {
                     return 'Email invalide';
                   }
                   return null;

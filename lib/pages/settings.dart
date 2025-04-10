@@ -1,7 +1,6 @@
+// configurer les paramètres de l'appli
 
- // configurer les paramètres de l'appli 
-
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -45,7 +44,8 @@ class _SettingsPageState extends State<SettingsPage> {
           children: [
             // SEUIL D'ALERTE
             Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
               elevation: 5,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -53,7 +53,8 @@ class _SettingsPageState extends State<SettingsPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     const Text("Seuil d’alerte (%)",
-                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18)),
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 18)),
                     Slider(
                       value: seuilAlerte,
                       onChanged: (value) => setState(() => seuilAlerte = value),
@@ -67,11 +68,13 @@ class _SettingsPageState extends State<SettingsPage> {
                       children: [
                         const Icon(Icons.email_outlined, color: Colors.grey),
                         const SizedBox(width: 8),
-                        const Text("Recevoir un email si le niveau descend sous ce seuil"),
+                        const Text(
+                            "Recevoir un email si le niveau descend sous ce seuil"),
                         const Spacer(),
                         Switch(
                           value: notificationsActives,
-                          onChanged: (value) => setState(() => notificationsActives = value),
+                          onChanged: (value) =>
+                              setState(() => notificationsActives = value),
                         )
                       ],
                     ),
@@ -83,7 +86,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
             // GESTION BOUTEILLES
             Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
               elevation: 5,
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
@@ -94,7 +98,8 @@ class _SettingsPageState extends State<SettingsPage> {
                         Icon(Icons.gas_meter_outlined),
                         SizedBox(width: 8),
                         Text("Gestion des bouteilles",
-                            style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold)),
                       ],
                     ),
                     const SizedBox(height: 12),
@@ -104,11 +109,12 @@ class _SettingsPageState extends State<SettingsPage> {
                       return ListTile(
                         title: Text(bouteille),
                         trailing: IconButton(
-                          icon: const Icon(Icons.delete_forever, color: Colors.red),
+                          icon: const Icon(Icons.delete_forever,
+                              color: Colors.red),
                           onPressed: () => supprimerBouteille(index),
                         ),
                       );
-                    }).toList(),
+                    }),
                     const Divider(),
                     Row(
                       children: [
@@ -121,7 +127,8 @@ class _SettingsPageState extends State<SettingsPage> {
                           ),
                         ),
                         IconButton(
-                          icon: const Icon(Icons.add_circle, color: Colors.green),
+                          icon:
+                              const Icon(Icons.add_circle, color: Colors.green),
                           onPressed: ajouterBouteille,
                         ),
                       ],
@@ -134,7 +141,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
             // COMPTE UTILISATEUR
             Card(
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(16)),
               elevation: 5,
               child: ListTile(
                 leading: const Icon(Icons.person),

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gazap/main.dart';
 
 class MongazPage extends StatefulWidget {
+  const MongazPage({super.key});
+
   @override
   _MongazPage createState() => _MongazPage();
 }
@@ -10,10 +12,10 @@ class MongazPage extends StatefulWidget {
 class _MongazPage extends State<MongazPage> {
   double gasLevel = 35;
   late Timer timer;
-  
+
   // Link icons
 
-    int _selectedIndex = 0;
+  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
     setState(() {
@@ -48,7 +50,7 @@ class _MongazPage extends State<MongazPage> {
     timer = Timer.periodic(Duration(seconds: 2), (Timer t) {
       setState(() {
         if (gasLevel > 0) {
-          gasLevel -= 5; 
+          gasLevel -= 5;
           if (gasLevel < 0) gasLevel = 0;
         }
       });
@@ -88,14 +90,18 @@ class _MongazPage extends State<MongazPage> {
             Container(
               padding: EdgeInsets.all(16),
               width: double.infinity,
-              decoration: BoxDecoration(color: const Color.fromARGB(255, 196, 88, 10)),
+              decoration:
+                  BoxDecoration(color: const Color.fromARGB(255, 196, 88, 10)),
               child: Column(
                 children: [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text("MonGaz",
-                          style: TextStyle(color: Colors.white, fontSize: 24, fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold)),
                       SizedBox(width: 10),
                       Icon(Icons.local_fire_department, color: Colors.white),
                     ],
@@ -104,7 +110,8 @@ class _MongazPage extends State<MongazPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("MENU", style: TextStyle(color: Colors.white, fontSize: 16)),
+                      Text("MENU",
+                          style: TextStyle(color: Colors.white, fontSize: 16)),
                       IconButton(
                         icon: Icon(Icons.close, color: Colors.white),
                         onPressed: () => Navigator.of(context).pop(),
@@ -145,24 +152,29 @@ class _MongazPage extends State<MongazPage> {
               title: Text("Déconnexion"),
               onTap: () => Navigator.pushNamed(context, '/logout'),
             ),
-            // Ajoutez un texte lien centré : Politiques de confidentalités 
+            // Ajoutez un texte lien centré : Politiques de confidentalités
             SizedBox(height: 30),
             Column(
               children: [
-                TextButton(onPressed: () {
-                  Navigator.pushNamed(context, '/policy');
-                }, 
-                child: Text(
-                  "Politiques de confidentialité",
-                  style: TextStyle(color: const Color.fromARGB(255, 200, 84, 12)),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/policy');
+                  },
+                  child: Text(
+                    "Politiques de confidentialité",
+                    style: TextStyle(
+                        color: const Color.fromARGB(255, 200, 84, 12)),
+                  ),
                 ),
-                ),
-                Text("Verson, v1.12.23",
+                Text(
+                  "Verson, v1.12.23",
                   style: TextStyle(color: Colors.grey, fontSize: 12),
                 ),
                 SizedBox(height: 13),
-                Text("© 2025 MonGaz. Tous droits réservés.",
-                style: TextStyle(color: Colors.grey, fontSize: 12), // 10px de font size
+                Text(
+                  "© 2025 MonGaz. Tous droits réservés.",
+                  style: TextStyle(
+                      color: Colors.grey, fontSize: 12), // 10px de font size
                 ),
                 SizedBox(height: 20),
               ],
@@ -186,13 +198,16 @@ class _MongazPage extends State<MongazPage> {
                       cursor: SystemMouseCursors.click,
                       child: GestureDetector(
                         onTap: () => Scaffold.of(context).openDrawer(),
-                        child: Image.asset('assets/icons/twobars.png', height: 24),
+                        child:
+                            Image.asset('assets/icons/twobars.png', height: 24),
                       ),
                     ),
                   ),
                   Row(
                     children: [
-                      Text("MonGaz", style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold)),
+                      Text("MonGaz",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold)),
                       SizedBox(width: 10),
                       Icon(Icons.local_fire_department, color: Colors.black),
                     ],
@@ -229,7 +244,8 @@ class _MongazPage extends State<MongazPage> {
                 children: [
                   Text("Bonjour!", style: TextStyle(color: Colors.grey[700])),
                   Text("Contrôler le niveau de votre gaz.",
-                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
                 ],
               ),
             ),
@@ -264,9 +280,13 @@ class _MongazPage extends State<MongazPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text("${gasLevel.toInt()}%",
-                        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
                     Text(status,
-                        style: TextStyle(fontSize: 14, color: statusColor, fontWeight: FontWeight.w500)),
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: statusColor,
+                            fontWeight: FontWeight.w500)),
                     if (gasLevel <= 0) ...[
                       SizedBox(height: 10),
                       ElevatedButton(
@@ -274,12 +294,13 @@ class _MongazPage extends State<MongazPage> {
                           Navigator.pushNamed(context, '/CommandPage');
                         },
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromARGB(255, 3, 145, 116),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          padding : const EdgeInsets.symmetric(horizontal: 25, vertical: 20)
-                        ),
+                            backgroundColor:
+                                const Color.fromARGB(255, 3, 145, 116),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 20)),
                         child: Text(
                           "Commander +",
                           style: TextStyle(
@@ -310,7 +331,8 @@ class _MongazPage extends State<MongazPage> {
                       Icon(Icons.warning_sharp, color: Colors.red),
                       SizedBox(width: 10),
                       Expanded(
-                        child: Text("Attention, votre bouteille est presque vide. Commandez.",
+                        child: Text(
+                            "Attention, votre bouteille est presque vide. Commandez.",
                             style: TextStyle(color: Colors.red)),
                       ),
                     ],
@@ -346,20 +368,28 @@ class _MongazPage extends State<MongazPage> {
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
                           color: Colors.green.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Column(
                           children: [
-                            Text("85%", style: TextStyle(fontSize: 20, color: Colors.green, fontWeight: FontWeight.bold)),
-                            Text("Volume utilisé ", style: TextStyle(fontSize: 12, color: Colors.grey)),
+                            Text("85%",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold)),
+                            Text("Volume utilisé ",
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
                           ],
                         ),
                       ),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
                           // ignore: deprecated_member_use
                           color: Colors.teal.withOpacity(0.1),
@@ -367,8 +397,14 @@ class _MongazPage extends State<MongazPage> {
                         ),
                         child: Column(
                           children: [
-                            Text("3min:32s", style: TextStyle(fontSize: 20, color: Colors.teal, fontWeight: FontWeight.bold)),
-                            Text("Temps d'utilisation", style: TextStyle(fontSize: 12, color: Colors.grey)),
+                            Text("3min:32s",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.teal,
+                                    fontWeight: FontWeight.bold)),
+                            Text("Temps d'utilisation",
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
                           ],
                         ),
                       )
@@ -386,7 +422,9 @@ class _MongazPage extends State<MongazPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text("Historique récent", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  Text("Historique récent",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
                   SizedBox(height: 10),
                   Container(
                     decoration: BoxDecoration(
@@ -455,7 +493,6 @@ class _MongazPage extends State<MongazPage> {
           ],
         ),
       ),
-
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         onTap: _onItemTapped,
