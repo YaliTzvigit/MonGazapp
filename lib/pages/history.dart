@@ -1,6 +1,3 @@
-
-// Historique du volume d'utiilsation du gaz 
-
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:intl/intl.dart';
@@ -24,7 +21,7 @@ class HistoriquePage extends StatelessWidget {
       backgroundColor: const Color(0xFFF4F6FA),
       appBar: AppBar(
         title: const Text('📊 Historique de suivi du volume de Gaz utilisé'),
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Color.fromARGB(255, 196, 88, 10),
         foregroundColor: Colors.white,
         centerTitle: true,
         elevation: 4,
@@ -35,7 +32,7 @@ class HistoriquePage extends StatelessWidget {
           children: [
             // Carte Graphique
             Card(
-              elevation: 6,
+              elevation: 8,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(20),
               ),
@@ -98,7 +95,10 @@ class HistoriquePage extends StatelessWidget {
                                 show: true,
                                 gradient: LinearGradient(
                                   colors: [
+                                    // ignore: deprecated_member_use
                                     Colors.blueAccent.withOpacity(0.3),
+                                    // ignore: deprecated_member_use
+                                    Colors.blueAccent.withOpacity(0.7),
                                   ],
                                 ),
                               ),
@@ -125,7 +125,7 @@ class HistoriquePage extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(vertical: 6),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12)),
-                    elevation: 3,
+                    elevation: 4,
                     child: ListTile(
                       leading: const CircleAvatar(
                         backgroundColor: Colors.blueAccent,
@@ -147,34 +147,40 @@ class HistoriquePage extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Boutons Export
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Export CSV
-                  },
-                  icon: const Icon(Icons.download_rounded),
-                  label: const Text("CSV"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.orangeAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      // TODO: Export CSV
+                    },
+                    icon: const Icon(Icons.download_rounded),
+                    label: const Text("Exporter en CSV"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.orangeAccent,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    ),
                   ),
-                ),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // TODO: Export PDF
-                  },
-                  icon: const Icon(Icons.picture_as_pdf_rounded),
-                  label: const Text("PDF"),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20)),
+                  const SizedBox(width: 20),
+                  ElevatedButton.icon(
+                    onPressed: () {
+                      // TODO: Export PDF
+                    },
+                    icon: const Icon(Icons.picture_as_pdf_rounded),
+                    label: const Text("Exporter en PDF"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.redAccent,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                    ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ],
         ),

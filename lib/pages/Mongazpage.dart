@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gazap/main.dart';
 
 class MongazPage extends StatefulWidget {
   @override
@@ -7,17 +8,47 @@ class MongazPage extends StatefulWidget {
 }
 
 class _MongazPage extends State<MongazPage> {
-  double gasLevel = 90;
+  double gasLevel = 35;
   late Timer timer;
-  int _selectedIndex = 0;
+  
+  // Link icons
+
+    int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    /* Naviguer vers les pages en fonction de l'index sélectionné
+      Les routes defini dans main.dart (ex: '/mongaz') sont
+      les mêmes utilisées ici aussi */
+
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/mongaz');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/history');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/help');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/clientspace');
+        break;
+      default:
+        Navigator.pushNamed(context, '/');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    timer = Timer.periodic(Duration(seconds: 3), (Timer t) {
+    timer = Timer.periodic(Duration(seconds: 2), (Timer t) {
       setState(() {
         if (gasLevel > 0) {
-          gasLevel -= 2;
+          gasLevel -= 5; 
           if (gasLevel < 0) gasLevel = 0;
         }
       });
@@ -57,7 +88,7 @@ class _MongazPage extends State<MongazPage> {
             Container(
               padding: EdgeInsets.all(16),
               width: double.infinity,
-              decoration: BoxDecoration(color: Colors.lightGreen),
+              decoration: BoxDecoration(color: const Color.fromARGB(255, 196, 88, 10)),
               child: Column(
                 children: [
                   Row(
@@ -73,7 +104,7 @@ class _MongazPage extends State<MongazPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text("Menu", style: TextStyle(color: Colors.white, fontSize: 20)),
+                      Text("MENU", style: TextStyle(color: Colors.white, fontSize: 16)),
                       IconButton(
                         icon: Icon(Icons.close, color: Colors.white),
                         onPressed: () => Navigator.of(context).pop(),
@@ -83,31 +114,59 @@ class _MongazPage extends State<MongazPage> {
                 ],
               ),
             ),
-            ListTile(
-              leading: Icon(Icons.home),
-              title: Text("Accueil"),
-              onTap: () => Navigator.pushNamed(context, '/accueil'),
-            ),
+            SizedBox(height: 35),
             ListTile(
               leading: Icon(Icons.bar_chart),
               title: Text("Statistiques"),
-              onTap: () => Navigator.pushNamed(context, '/statistiques'),
+              onTap: () => Navigator.pushNamed(context, '/history'),
             ),
             ListTile(
               leading: Icon(Icons.settings),
               title: Text("Paramètres"),
-              onTap: () => Navigator.pushNamed(context, '/parametres'),
+              onTap: () => Navigator.pushNamed(context, '/settings'),
+            ),
+            ListTile(
+              leading: Icon(Icons.notifications),
+              title: Text("Notifs"),
+              onTap: () => Navigator.pushNamed(context, '/notif'),
             ),
             ListTile(
               leading: Icon(Icons.help_outline),
               title: Text("Aide"),
-              onTap: () => Navigator.pushNamed(context, '/aide'),
+              onTap: () => Navigator.pushNamed(context, '/HelpPage'),
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text("A propos"),
+              onTap: () => Navigator.pushNamed(context, '/about'),
             ),
             ListTile(
               leading: Icon(Icons.logout),
               title: Text("Déconnexion"),
               onTap: () => Navigator.pushNamed(context, '/logout'),
             ),
+            // Ajoutez un texte lien centré : Politiques de confidentalités 
+            SizedBox(height: 30),
+            Column(
+              children: [
+                TextButton(onPressed: () {
+                  Navigator.pushNamed(context, '/policy');
+                }, 
+                child: Text(
+                  "Politiques de confidentialité",
+                  style: TextStyle(color: const Color.fromARGB(255, 200, 84, 12)),
+                ),
+                ),
+                Text("Verson, v1.12.23",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                SizedBox(height: 13),
+                Text("© 2025 MonGaz. Tous droits réservés.",
+                style: TextStyle(color: Colors.grey, fontSize: 12), // 10px de font size
+                ),
+                SizedBox(height: 20),
+              ],
+            )
           ],
         ),
       ),
@@ -164,7 +223,7 @@ class _MongazPage extends State<MongazPage> {
 
             SizedBox(height: 30),
             Padding(
-              padding: const EdgeInsets.only(left: 10.0),
+              padding: const EdgeInsets.only(right: 50.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -182,7 +241,7 @@ class _MongazPage extends State<MongazPage> {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Image.asset('assets/images/gas.png', height: 100),
+                Image.asset('assets/images/gas.png', height: 120),
                 SizedBox(width: 20),
                 Container(
                   height: 120,
@@ -211,7 +270,9 @@ class _MongazPage extends State<MongazPage> {
                     if (gasLevel <= 0) ...[
                       SizedBox(height: 10),
                       ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/CommandPage');
+                        },
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color.fromARGB(255, 3, 145, 116),
                           shape: RoundedRectangleBorder(
@@ -274,7 +335,7 @@ class _MongazPage extends State<MongazPage> {
                 children: [
                   Row(
                     children: [
-                      Text("STATISTIQUES D'AUJOURD'HUI",
+                      Text("STATISTIQUES - Aujourd'hui",
                           style: TextStyle(fontWeight: FontWeight.bold)),
                       SizedBox(width: 5),
                       Icon(Icons.bar_chart, size: 18),
@@ -300,6 +361,7 @@ class _MongazPage extends State<MongazPage> {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                         decoration: BoxDecoration(
+                          // ignore: deprecated_member_use
                           color: Colors.teal.withOpacity(0.1),
                           borderRadius: BorderRadius.circular(8),
                         ),
@@ -396,11 +458,7 @@ class _MongazPage extends State<MongazPage> {
 
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
-        },
+        onTap: _onItemTapped,
         type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
@@ -445,7 +503,7 @@ class _MongazPage extends State<MongazPage> {
                 color: _selectedIndex == 3 ? Colors.lightGreen : Colors.grey,
               ),
             ),
-            label: "Mon espace",
+            label: "Profil",
           ),
         ],
       ),

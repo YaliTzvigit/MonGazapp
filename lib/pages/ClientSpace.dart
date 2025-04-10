@@ -1,6 +1,3 @@
-
-/* L'Espace client */
-
 import 'package:flutter/material.dart';
 
 class EspaceClientPage extends StatelessWidget {
@@ -14,15 +11,15 @@ class EspaceClientPage extends StatelessWidget {
     const String phone = "+225 07 00 00 00";
     const String statut = "Compte vérifié";
     final List<Map<String, dynamic>> bouteilles = [
-      {"Nom": "Bouteille 12kg", "niveau": "65%", "date": "07 Avril 2025"},
-      {"Nom": "Bouteille 6kg", "niveau": "30%", "date": "06 Avril 2025"},
+      {"nom": "Bouteille 12kg", "niveau": "65%", "date": "07 Avril 2025"},
+      {"nom": "Bouteille 6kg", "niveau": "30%", "date": "06 Avril 2025"},
     ];
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text("👤 Mon Espace Client"),
+        title: const Text(" Mon Espace Client"),
         centerTitle: true,
-        backgroundColor: Colors.blueAccent,
+        backgroundColor: Color.fromARGB(255, 196, 88, 10),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -38,7 +35,7 @@ class EspaceClientPage extends StatelessWidget {
                   children: [
                     CircleAvatar(
                       radius: 40,
-                      backgroundImage: AssetImage("assets/profile.jpg"), // ou NetworkImage
+                      backgroundImage: AssetImage("assets/images/profile.png"),
                     ),
                     SizedBox(width: 16),
                     Column(

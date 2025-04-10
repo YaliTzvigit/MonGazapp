@@ -10,8 +10,10 @@ class HelpPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('❓ Aide'),
-        backgroundColor: Colors.blueAccent,
+        title: const Text(' AIDE',
+        style: TextStyle(fontSize: 20, color: Colors.white,
+        fontWeight: FontWeight.bold),),
+        backgroundColor: Color.fromARGB(255, 196, 88, 10),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -62,7 +64,7 @@ class HelpPage extends StatelessWidget {
                       children: [
                         Icon(Icons.tips_and_updates, color: Colors.orange),
                         SizedBox(width: 10),
-                        Text("Conseils d’utilisation",
+                        Text("Conseils d'utilisation",
                             style: TextStyle(
                                 fontWeight: FontWeight.bold, fontSize: 18)),
                       ],
