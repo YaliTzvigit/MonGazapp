@@ -1,190 +1,449 @@
-import 'package:flutter/foundation.dart';
+import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:gazap/main.dart';
 
 class MongazPage extends StatefulWidget {
   const MongazPage({super.key});
 
   @override
-  State<MongazPage> createState() => _MongazPageState();
+  _MongazPage createState() => _MongazPage();
 }
 
-class _MongazPageState extends State<MongazPage>
-    with SingleTickerProviderStateMixin {
-  int gazLevel = 42;
-  String status = "Normal";
-  Color statusColor = Colors.green;
-  late AnimationController _controller;
-  late Animation<Offset> _slideAnimation;
-  bool _showMenu = false;
+class _MongazPage extends State<MongazPage> {
+  double gasLevel = 35;
+  late Timer timer;
+
+  // Link icons
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    /* Naviguer vers les pages en fonction de l'index sélectionné
+      Les routes defini dans main.dart (ex: '/mongaz') sont
+      les mêmes utilisées ici aussi */
+
+    switch (index) {
+      case 0:
+        Navigator.pushNamed(context, '/mongaz');
+        break;
+      case 1:
+        Navigator.pushNamed(context, '/history');
+        break;
+      case 2:
+        Navigator.pushNamed(context, '/help');
+        break;
+      case 3:
+        Navigator.pushNamed(context, '/clientspace');
+        break;
+      default:
+        Navigator.pushNamed(context, '/');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _controller = AnimationController(
-        vsync: this, duration: const Duration(milliseconds: 300));
-    _slideAnimation = Tween<Offset>(begin: const Offset(1, 0), end: Offset.zero)
-        .animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
-    Future.delayed(const Duration(seconds: 3), _decreaseGasLevel);
-  }
-
-  void _decreaseGasLevel() {
-    setState(() {
-      if (gazLevel > 0) gazLevel -= 1;
-      status = gazLevel <= 15
-          ? "Critique"
-          : gazLevel <= 30
-              ? "Faible"
-              : "Normal";
-      statusColor = gazLevel <= 15
-          ? Colors.red
-          : gazLevel <= 30
-              ? Colors.orange
-              : Colors.green;
-    });
-
-    if (gazLevel > 0) {
-      Future.delayed(const Duration(seconds: 3), _decreaseGasLevel);
-    }
-  }
-
-  void _toggleMenu() {
-    setState(() {
-      _showMenu = !_showMenu;
-      if (_showMenu) {
-        _controller.forward();
-      } else {
-        _controller.reverse();
-      }
+    timer = Timer.periodic(Duration(seconds: 2), (Timer t) {
+      setState(() {
+        if (gasLevel > 0) {
+          gasLevel -= 5;
+          if (gasLevel < 0) gasLevel = 0;
+        }
+      });
     });
   }
 
   @override
   void dispose() {
-    _controller.dispose();
+    timer.cancel();
     super.dispose();
+  }
+
+  String getStatusLabel(double level) {
+    if (level > 45) return "Bon";
+    if (level > 30) return "Normal";
+    if (level > 15) return "Faible";
+    if (level > 0) return "Critique";
+    return "Vide";
+  }
+
+  Color getStatusColor(double level) {
+    if (level > 45) return Colors.green;
+    if (level > 30) return Colors.blue;
+    if (level > 15) return Colors.orange;
+    return Colors.red;
   }
 
   @override
   Widget build(BuildContext context) {
+    final status = getStatusLabel(gasLevel);
+    final statusColor = getStatusColor(gasLevel);
+
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        title: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      drawer: Drawer(
+        child: Column(
           children: [
-            const Text(
-              '225 0788729838',
-              style: TextStyle(fontWeight: FontWeight.bold),
+            Container(
+              padding: EdgeInsets.all(16),
+              width: double.infinity,
+              decoration:
+                  BoxDecoration(color: const Color.fromARGB(255, 196, 88, 10)),
+              child: Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text("MonGaz",
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold)),
+                      SizedBox(width: 10),
+                      Icon(Icons.local_fire_department, color: Colors.white),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text("MENU",
+                          style: TextStyle(color: Colors.white, fontSize: 16)),
+                      IconButton(
+                        icon: Icon(Icons.close, color: Colors.white),
+                        onPressed: () => Navigator.of(context).pop(),
+                      )
+                    ],
+                  )
+                ],
+              ),
             ),
-            const Text('Mon Gaz 🔥',
-                style: TextStyle(fontWeight: FontWeight.bold)),
-            IconButton(
-              icon: const Icon(Icons.menu_sharp),
-              onPressed: _toggleMenu,
+            SizedBox(height: 35),
+            ListTile(
+              leading: Icon(Icons.bar_chart),
+              title: Text("Statistiques"),
+              onTap: () => Navigator.pushNamed(context, '/history'),
+            ),
+            ListTile(
+              leading: Icon(Icons.settings),
+              title: Text("Paramètres"),
+              onTap: () => Navigator.pushNamed(context, '/settings'),
+            ),
+            ListTile(
+              leading: Icon(Icons.notifications),
+              title: Text("Notifs"),
+              onTap: () => Navigator.pushNamed(context, '/notif'),
+            ),
+            ListTile(
+              leading: Icon(Icons.help_outline),
+              title: Text("Aide"),
+              onTap: () => Navigator.pushNamed(context, '/HelpPage'),
+            ),
+            ListTile(
+              leading: Icon(Icons.info),
+              title: Text("A propos"),
+              onTap: () => Navigator.pushNamed(context, '/about'),
+            ),
+            ListTile(
+              leading: Icon(Icons.logout),
+              title: Text("Déconnexion"),
+              onTap: () => Navigator.pushNamed(context, '/logout'),
+            ),
+            // Ajoutez un texte lien centré : Politiques de confidentalités
+            SizedBox(height: 30),
+            Column(
+              children: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, '/policy');
+                  },
+                  child: Text(
+                    "Politiques de confidentialité",
+                    style: TextStyle(
+                        color: const Color.fromARGB(255, 200, 84, 12)),
+                  ),
+                ),
+                Text(
+                  "Verson, v1.12.23",
+                  style: TextStyle(color: Colors.grey, fontSize: 12),
+                ),
+                SizedBox(height: 13),
+                Text(
+                  "© 2025 MonGaz. Tous droits réservés.",
+                  style: TextStyle(
+                      color: Colors.grey, fontSize: 12), // 10px de font size
+                ),
+                SizedBox(height: 20),
+              ],
             )
           ],
         ),
       ),
-      body: Stack(
-        children: [
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
+      backgroundColor: Color(0xF0F9FFFA),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            // Header
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Builder(
+                    builder: (context) => MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: GestureDetector(
+                        onTap: () => Scaffold.of(context).openDrawer(),
+                        child:
+                            Image.asset('assets/icons/twobars.png', height: 24),
+                      ),
+                    ),
+                  ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      const Icon(Icons.local_gas_station,
-                          size: 60, color: Colors.blueGrey),
-                      const SizedBox(width: 20),
-                      Column(
-                        children: [
-                          SizedBox(
-                            width: 150,
-                            child: LinearProgressIndicator(
-                              value: gazLevel / 100,
-                              minHeight: 10,
-                              color: statusColor,
-                            ),
-                          ),
-                          const SizedBox(height: 8),
-                          Text(
-                            '$gazLevel%',
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
-                          const SizedBox(height: 4),
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 8, vertical: 4),
+                      Text("MonGaz",
+                          style: TextStyle(
+                              fontSize: 25, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 10),
+                      Icon(Icons.local_fire_department, color: Colors.black),
+                    ],
+                  ),
+                  MouseRegion(
+                    cursor: SystemMouseCursors.click,
+                    child: Stack(
+                      children: [
+                        Image.asset('assets/icons/user.png', height: 24),
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            width: 8,
+                            height: 8,
                             decoration: BoxDecoration(
-                              color: statusColor,
-                              borderRadius: BorderRadius.circular(12),
-                            ),
-                            child: Text(
-                              status,
-                              style: const TextStyle(color: Colors.white),
+                              color: Colors.orange,
+                              shape: BoxShape.circle,
                             ),
                           ),
-                        ],
+                        )
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 30),
+            Padding(
+              padding: const EdgeInsets.only(right: 50.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Bonjour!", style: TextStyle(color: Colors.grey[700])),
+                  Text("Contrôler le niveau de votre gaz.",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 20)),
+                ],
+              ),
+            ),
+
+            SizedBox(height: 30),
+
+            // Gas Icon + Gauge + % + Button: Flex display
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Image.asset('assets/images/gas.png', height: 120),
+                SizedBox(width: 20),
+                Container(
+                  height: 120,
+                  width: 20,
+                  decoration: BoxDecoration(
+                    border: Border.all(color: Colors.grey),
+                    borderRadius: BorderRadius.circular(4),
+                  ),
+                  child: Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Container(
+                      height: 120 * (gasLevel / 100),
+                      width: 20,
+                      color: statusColor,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 30),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text("${gasLevel.toInt()}%",
+                        style: TextStyle(
+                            fontSize: 16, fontWeight: FontWeight.bold)),
+                    Text(status,
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: statusColor,
+                            fontWeight: FontWeight.w500)),
+                    if (gasLevel <= 0) ...[
+                      SizedBox(height: 10),
+                      ElevatedButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/CommandPage');
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor:
+                                const Color.fromARGB(255, 3, 145, 116),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 25, vertical: 20)),
+                        child: Text(
+                          "Commander +",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 15,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ]
+                  ],
+                )
+              ],
+            ),
+
+            if (gasLevel <= 0) ...[
+              SizedBox(height: 30),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: Container(
+                  padding: EdgeInsets.all(10),
+                  decoration: BoxDecoration(
+                    color: Colors.red[100],
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  child: Row(
+                    children: [
+                      Icon(Icons.warning_sharp, color: Colors.red),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: Text(
+                            "Attention, votre bouteille est presque vide. Commandez.",
+                            style: TextStyle(color: Colors.red)),
                       ),
                     ],
                   ),
-                  const SizedBox(height: 24),
-                  if (gazLevel <= 15)
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.red.shade100,
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      child: const Row(
-                        children: [
-                          Icon(Icons.notifications, color: Colors.red),
-                          SizedBox(width: 8),
-                          Expanded(
-                            child: Text(
-                                'Attention ! Votre gaz est presque vide. Pensez à commander.',
-                                style: TextStyle(color: Colors.red)),
-                          ),
-                        ],
-                      ),
-                    ),
-                  const SizedBox(height: 28),
-                  ElevatedButton(
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color.fromARGB(255, 11, 128, 98),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 25, vertical: 20),
-                      textStyle: const TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.normal,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    onPressed: () {
-                      if (kDebugMode) {
-                        print('Passer une commande de gaz +');
-                      }
-                    },
-                    child: const Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'Passer une commande',
-                          style: TextStyle(
-                            fontFamily: 'Montserrat',
-                            color: Colors.white,
-                          ),
+                ),
+              ),
+            ],
+
+            SizedBox(height: 30),
+
+            // Statistiques
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20),
+              padding: EdgeInsets.all(16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(color: Colors.grey.shade300),
+                borderRadius: BorderRadius.circular(5),
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text("STATISTIQUES - Aujourd'hui",
+                          style: TextStyle(fontWeight: FontWeight.bold)),
+                      SizedBox(width: 5),
+                      Icon(Icons.bar_chart, size: 18),
+                    ],
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          color: Colors.green.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                        SizedBox(width: 10),
-                        Icon(
-                          Icons.add,
-                          color: Colors.white,
+                        child: Column(
+                          children: [
+                            Text("85%",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.green,
+                                    fontWeight: FontWeight.bold)),
+                            Text("Volume utilisé ",
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
+                          ],
+                        ),
+                      ),
+                      Container(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          // ignore: deprecated_member_use
+                          color: Colors.teal.withOpacity(0.1),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Column(
+                          children: [
+                            Text("3min:32s",
+                                style: TextStyle(
+                                    fontSize: 20,
+                                    color: Colors.teal,
+                                    fontWeight: FontWeight.bold)),
+                            Text("Temps d'utilisation",
+                                style: TextStyle(
+                                    fontSize: 12, color: Colors.grey)),
+                          ],
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              ),
+            ),
+
+            SizedBox(height: 30),
+
+            // Historique d'utilisation
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text("Historique récent",
+                      style:
+                          TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
+                  SizedBox(height: 10),
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey.shade300),
+                      borderRadius: BorderRadius.circular(5),
+                    ),
+                    child: Column(
+                      children: [
+                        ListTile(
+                          leading: Icon(Icons.calendar_today, size: 20),
+                          title: Text("07 Avril 2025"),
+                          subtitle: Text("Durée : 4min - Conso : 8%"),
+                        ),
+                        Divider(height: 1),
+                        ListTile(
+                          leading: Icon(Icons.calendar_today, size: 20),
+                          title: Text("06 Avril 2025"),
+                          subtitle: Text("Durée : 5min - Conso : 10%"),
                         ),
                       ],
                     ),
@@ -192,130 +451,97 @@ class _MongazPageState extends State<MongazPage>
                 ],
               ),
             ),
-          ),
-          if (_showMenu)
-            SlideTransition(
-              position: _slideAnimation,
-              child: Align(
-                alignment: Alignment.centerRight,
-                child: Container(
-                  width: 400,
-                  height: double.infinity,
-                  color: const Color.fromARGB(255, 58, 58, 58),
-                  padding: const EdgeInsets.all(16),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Text(
-                        'Navigation',
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
+
+            SizedBox(height: 20),
+
+            // Estimation de recharge
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              child: Container(
+                padding: EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: Colors.orange.shade50,
+                  border: Border.all(color: Colors.orange.shade200),
+                  borderRadius: BorderRadius.circular(6),
+                ),
+                child: Row(
+                  children: [
+                    Icon(Icons.schedule, color: Colors.orange),
+                    SizedBox(width: 10),
+                    Expanded(
+                      child: Text(
+                        "Estimation : Recharge recommandée dans 4 jours à ce rythme.",
+                        style: TextStyle(color: Colors.orange[800]),
                       ),
-                      const SizedBox(height: 50),
-                      ListTile(
-                        leading: const Icon(Icons.login),
-                        title: const Text(
-                          "Se connecter",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {},
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.settings),
-                        title: const Text(
-                          "Paramètres du compte",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {},
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                      const Divider(
-                        color: Colors.grey,
-                        thickness: 1,
-                      ),
-                      ListTile(
-                        leading: const Icon(Icons.logout),
-                        title: const Text(
-                          "Se déconnecter",
-                          style: TextStyle(color: Colors.white),
-                        ),
-                        onTap: () {},
-                        contentPadding: EdgeInsets.zero,
-                      ),
-                      const SizedBox(height: 50),
-                      const Text(
-                        'Version 1.0.0',
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Colors.white70,
-                        ),
-                        textAlign: TextAlign.center,
-                      ),
-                      const SizedBox(height: 40),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                                onTap: () {
-                                  if (kDebugMode) {
-                                    print('Instagram link.');
-                                  }
-                                },
-                                child: const Text(
-                                  "Instagram",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 159, 94, 15),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )),
-                            const SizedBox(width: 20),
-                            GestureDetector(
-                                onTap: () {
-                                  if (kDebugMode) {
-                                    print('Facebook link.');
-                                  }
-                                },
-                                child: const Text(
-                                  "Facebook",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 159, 94, 15),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                )),
-                            const SizedBox(width: 20),
-                            GestureDetector(
-                                onTap: () {
-                                  if (kDebugMode) {
-                                    print('Lien TikTok.');
-                                  }
-                                },
-                                child: const Text(
-                                  "Twitter",
-                                  style: TextStyle(
-                                    color: Color.fromARGB(255, 159, 94, 15),
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ))
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
               ),
             ),
+
+            // Feedback
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 20),
+              child: TextButton.icon(
+                onPressed: () {
+                  Navigator.pushNamed(context, '/feedback');
+                },
+                icon: Icon(Icons.feedback_outlined),
+                label: Text("Donner un retour"),
+              ),
+            ),
+          ],
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        items: [
+          BottomNavigationBarItem(
+            icon: Center(
+              child: Image.asset(
+                'assets/icons/home.png',
+                width: 28,
+                height: 28,
+                color: _selectedIndex == 0 ? Colors.lightGreen : Colors.grey,
+              ),
+            ),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Center(
+              child: Image.asset(
+                'assets/icons/graph.png',
+                width: 28,
+                height: 28,
+                color: _selectedIndex == 1 ? Colors.lightGreen : Colors.grey,
+              ),
+            ),
+            label: "Historique",
+          ),
+          BottomNavigationBarItem(
+            icon: Center(
+              child: Image.asset(
+                'assets/icons/help.png',
+                width: 28,
+                height: 28,
+                color: _selectedIndex == 2 ? Colors.lightGreen : Colors.grey,
+              ),
+            ),
+            label: "Aide",
+          ),
+          BottomNavigationBarItem(
+            icon: Center(
+              child: Image.asset(
+                'assets/icons/user.png',
+                width: 22,
+                height: 22,
+                color: _selectedIndex == 3 ? Colors.lightGreen : Colors.grey,
+              ),
+            ),
+            label: "Profil",
+          ),
         ],
       ),
     );

@@ -18,7 +18,7 @@ class _AuthPageState extends State<AuthPage> {
   void navigateToMonGazPage() {
     Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => const MongazPage()),
+      MaterialPageRoute(builder: (context) =>  MongazPage()),
     );
   }
 
@@ -42,13 +42,7 @@ class _AuthPageState extends State<AuthPage> {
               const SizedBox(height: 30),
               const Text(
                 "MonGaz 🔥",
-                style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 20),
-              const CircleAvatar(
-                radius: 45,
-                backgroundImage: AssetImage('assets/images/profile.png'),
-                backgroundColor: Colors.transparent,
+                style: TextStyle(fontSize: 35, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -63,14 +57,17 @@ class _AuthPageState extends State<AuthPage> {
                 children: [
                   GestureDetector(
                     onTap: () => setState(() => isLogin = true),
-                    child: Text(
-                      "Connexion",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: isLogin ? Colors.black : Colors.grey,
-                        fontSize: 16,
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Text(
+                        "Connexion",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: isLogin ? Colors.black : Colors.grey,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
+                  ),
                   ),
                   const Padding(
                     padding: EdgeInsets.symmetric(horizontal: 12.0),
@@ -78,14 +75,17 @@ class _AuthPageState extends State<AuthPage> {
                   ),
                   GestureDetector(
                     onTap: () => setState(() => isLogin = false),
-                    child: Text(
-                      "Inscription",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: isLogin ? Colors.grey : Colors.black,
-                        fontSize: 16,
+                    child: MouseRegion(
+                      cursor: SystemMouseCursors.click,
+                      child: Text(
+                        "Inscription",
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          color: isLogin ? Colors.grey : Colors.black,
+                          fontSize: 16,
+                        ),
                       ),
-                    ),
+                   ),
                   ),
                 ],
               ),
@@ -122,7 +122,7 @@ class _AuthPageState extends State<AuthPage> {
                   child: ElevatedButton(
                     onPressed: navigateToMonGazPage,
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.green[700],
+                      backgroundColor: const Color.fromARGB(255, 13, 129, 19),
                       padding: const EdgeInsets.symmetric(
                           horizontal: 25, vertical: 16),
                       shape: RoundedRectangleBorder(
@@ -145,14 +145,21 @@ class _AuthPageState extends State<AuthPage> {
 
               if (isLogin)
                 GestureDetector(
-                  onTap: () => setState(() => isLogin = false),
-                  child: const Text(
-                    "Nouveau/elle ? Crée ton compte",
-                    style: TextStyle(
-                      color: Colors.green,
-                    ),
-                  ),
-                ),
+  onTap: () => setState(() => isLogin = false), // Action à exécuter au tap
+  child: const MouseRegion(
+    cursor: SystemMouseCursors.click, // Changer le curseur au survol
+    child: Text(
+      "Vous n'êtes pas encore client ? Inscrivez-vous gratuitement.",
+      style: TextStyle(
+        // decoration: TextDecoration.underline,
+        color: Color.fromARGB(255, 44, 71, 45), // Texte vert
+        fontSize: 14, // Taille ajustable
+        fontWeight: FontWeight.normal, // Texte en gras
+      ),
+    ),
+  ),
+),
+
             ],
           ),
         ),
