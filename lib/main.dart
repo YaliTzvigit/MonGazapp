@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gazap/pages/welcome.dart';
 import 'pages/HomePage.dart'; // Importe HomePage
 import 'pages/Mongazpage.dart'; // Importe AboutPage
 import 'pages/auth.dart'; // Importe AboutPage
@@ -13,8 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      initialRoute: '/home', // Route initiale (HomePage)
+      initialRoute: '/welcome', // Route initiale (HomePage)
       routes: {
+        '/welcome': (context) => WelcomeScreen(),
         '/home': (context) => const HomePage(),
         '/mongaz': (context) => const MongazPage(),
         '/auth': (context) => const AuthPage(),
